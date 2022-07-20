@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodolistController;
-
+use App\Http\Controllers\SessionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,10 +14,24 @@ use App\Http\Controllers\TodolistController;
 |
 */
 
-Route::get('/', [TodolistController::class, 'index']);
+Route::get('/',[TodolistController::class, 'index'])->middleware(['auth']);
+
+require __DIR__.'/auth.php';
 
 Route::post('/add', [TodolistController::class, 'add']);
 
 Route::post('/update', [TodolistController::class, 'update']);
 
 Route::post('/remove', [TodolistController::class, 'remove']);
+
+Route::get('/find',[TodolistController::class, 'find']);
+Route::post('/find',[TodolistController::class, 'find']);
+
+/*Route::prefix('todo')->group(function(){
+    Route::get('/find',[TodolistController::class, 'find']);
+    Route::post('/find',[TodolistController::class, 'find']);
+    Route::post('/search',[TodolistController::class, 'search']);
+    Route::post('/update',[TodolistController::class, 'list_update']);
+    Route::post('/remove',[TodolistController::class, 'list_remove']);
+});*/
+

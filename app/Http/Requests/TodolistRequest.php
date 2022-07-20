@@ -29,7 +29,29 @@ class TodolistRequest extends FormRequest
         {
             return true;
         }
-
+        else if($this->path() == "find")
+        {
+            return true;
+        }
+        /*else if(strpos($this->path(),"todo") == 0)
+        {
+            if($this->path() == "todo/find")
+            {
+                return true;
+            }
+            else if($this->path() == "todo/search")
+            {
+                return true;
+            }
+            else if($this->path() == "todo/update")
+            {
+                return true;
+            }
+            else if($this->path() == "todo/remove")
+            {
+                return true;
+            }
+        }*/
         return false;
     }
 

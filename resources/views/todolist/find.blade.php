@@ -1,3 +1,4 @@
+
 @extends('layouts.default')
 <style>
     /* 共通 */
@@ -205,6 +206,23 @@
         background: #64fcd4;
         color: white;
     }
+
+    .content__area-bkbtn{
+        background: white;
+        border: 2px gray solid;
+        border-radius: 5px;
+        text-align: center;
+        color: gray;
+        font-size: 12px;
+        font-weight: bold ;
+        padding: 7px 15px;
+    }
+
+    .content__area-bkbtn:hover{
+        background: gray;
+        color: white;
+    }
+
 </style>
 @section('title', 'COACHTECH')
 
@@ -213,21 +231,20 @@
     <div class="content__area">
         <form method="post">
             <div class="content__area-head">
-                <h1 class="content__area-head-tle">Todo List</h1>
+                <h1 class="content__area-head-tle">タスク検索</h1>
                 <p class="content__area-head-dsp">「{{$user->name}}」でログイン中</p>
                 <button type="submit" formaction="./logout" class="content__area-head-btn">ログアウト</button>
             </div>
-            <button type="submit" formaction="./find" class="content__area-mbtn">タスク検索</button>
             @csrf
-            <div class="content__area-flex">
-                <input name="todo_memo" class="content__area-flex-inp" maxlenght="20">
-                <input type="hidden" name="user_id" value="{{$user->id}}">
+             <div class="content__area-flex">
+               <input name="todo_memo" class="content__area-flex-inp" maxlenght="20">
                 <select name="task_id" class="content__area-flex-select">
+                    <option value="" selected></option>
                 @foreach($tasks as $task)
                     <option value="{{$task->id}}">{{$task->name}}</option>
                 @endforeach
                 </select>
-                <button type="submit" class="content__area-flex-btn" formaction="./add">追加</button>
+                <button type="submit" class="content__area-flex-btn" action="./find">検索</button>
             </div>
         </form>
 
@@ -263,15 +280,20 @@
                         </select>                             
                     </td>
                     <td>
-                        <button type="submit" formaction="./update"  class="content__area-tbl-detail-btn1">更新</button>
+                        <button type="submit" formaction="update"  class="content__area-tbl-detail-btn1">更新</button>
                     </td>
                     <td>
-                        <button type="submit" formaction="./remove" class="content__area-tbl-detail-btn2" >削除</button>
+                        <button type="submit" formaction="remove" class="content__area-tbl-detail-btn2" >削除</button>
                     </td>
                 </form>
             </tr>
             @endforeach
         </table>
+
+        <from action="post">
+          @csrf
+          <button type="submit" formaction="./" class="content__area-bkbtn">戻る</button>
+        </form>
     </div>
 </div>
 @endsection

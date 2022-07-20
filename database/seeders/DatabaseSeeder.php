@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-      $this->call(TodolistTableSeeder::class);
+      //$this->call(TodolistTableSeeder::class);
+      $this->call(TaskTableSeeder::class);
     }
 }
