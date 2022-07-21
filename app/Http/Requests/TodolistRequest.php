@@ -29,11 +29,7 @@ class TodolistRequest extends FormRequest
         {
             return true;
         }
-        else if($this->path() == "find")
-        {
-            return true;
-        }
-        /*else if(strpos($this->path(),"todo") == 0)
+        else if(strpos($this->path(),"todo") == 0)
         {
             if($this->path() == "todo/find")
             {
@@ -51,7 +47,8 @@ class TodolistRequest extends FormRequest
             {
                 return true;
             }
-        }*/
+        }
+        
         return false;
     }
 
@@ -63,7 +60,7 @@ class TodolistRequest extends FormRequest
     public function rules()
     {
         return [
-            'todo_memo' => 'string| max:40 |required'
+            'todo_memo' => 'string| max:40 |required',
         ];
     }
 }

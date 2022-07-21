@@ -24,14 +24,12 @@ Route::post('/update', [TodolistController::class, 'update']);
 
 Route::post('/remove', [TodolistController::class, 'remove']);
 
-Route::get('/find',[TodolistController::class, 'find']);
-Route::post('/find',[TodolistController::class, 'find']);
+/*route::get('/find', [TodolistController::class, 'find']); */
 
-/*Route::prefix('todo')->group(function(){
-    Route::get('/find',[TodolistController::class, 'find']);
-    Route::post('/find',[TodolistController::class, 'find']);
-    Route::post('/search',[TodolistController::class, 'search']);
-    Route::post('/update',[TodolistController::class, 'list_update']);
-    Route::post('/remove',[TodolistController::class, 'list_remove']);
-});*/
+Route::prefix('todo')->group(function(){
+    Route::get('/find', [TodolistController::class, 'find']);
+    Route::get('/search', [TodolistController::class, 'search']);
+    Route::post('/update', [TodolistController::class, 'list_update']);
+    Route::post('/remove', [TodolistController::class, 'list_remove']);
+});
 

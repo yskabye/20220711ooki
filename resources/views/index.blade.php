@@ -5,6 +5,10 @@
         outline: none;
     }
 
+    a{
+        text-decoration: none;
+    }
+
     /* 先頭の入力 */
 
     .content{
@@ -57,15 +61,19 @@
     }
 
     .content__area-mbtn{
-        padding: 7px 12px;
+        display:inline-block;
+        margin: 0 0 30px 0;
+    }
+
+    .content__area-mbtn a{
         background-color: white;
         border: 2px yellowgreen solid ;
         border-radius: 5px;
+        padding: 8px 12px;
         color: yellowgreen;
-        margin: 0 0 20px 0;
     }
 
-    .content__area-mbtn:hover{
+    .content__area-mbtn a:hover{
         background: yellowgreen;
         color: white;
     }
@@ -217,7 +225,7 @@
                 <p class="content__area-head-dsp">「{{$user->name}}」でログイン中</p>
                 <button type="submit" formaction="./logout" class="content__area-head-btn">ログアウト</button>
             </div>
-            <button type="submit" formaction="./find" class="content__area-mbtn">タスク検索</button>
+            <div class="content__area-mbtn"><a href="/todo/find">タスク検索</a></div>
             @csrf
             <div class="content__area-flex">
                 <input name="todo_memo" class="content__area-flex-inp" maxlenght="20">

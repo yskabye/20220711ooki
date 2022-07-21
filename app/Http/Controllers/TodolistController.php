@@ -16,6 +16,9 @@ class TodolistController extends Controller
         $todolists = Todolist::where('user_id', $user->id)->get();
         $tasks = Task::all();
 
+        $task_id = session()->put('task_id', 0);
+        $keyword = session()->put('keyword', '') . '*';
+
         return view('index', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
 	
@@ -43,25 +46,24 @@ class TodolistController extends Controller
         return redirect('/');
     }
 
-    public function find(TodolistRequest $request)
+    public function find(Request $request)
     {
-        //$task_id = $request->session()->get('task_id', 0);
-        // $task_id = 0;
-        // dd($task_id);
-        // $user = Auth::user();
-        // dd($user);
-        // //$todolists = Todolist::where('user_id', $user->id)::where('task_id', $task_id)::where('todo_memo','like',"*")->get();
-        // $todolists = Todolist::where('user_id', $user->id)::where('task_id', $task_id)->get();
-        // $tasks = Task::all();
-        // return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
-        return view('welcome');
+        $task_id = $request->session()->get('task_id');
+        $keyword = $request->session()->get('keyword') . '*';
+        $user = Auth::user();
+        $todolists = Todolist::where('user_id', $user->id)->where('task_id', $task_id)->where('todo_memo', 'like', $keyword)->get();
+        $tasks = Task::all();
+        return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
 
-    public function search(TodolistRequest $request)
+    public function search(Request $request)
     {
+        dd($request);
         $request->session()->put('task_id', $request->task_id) ;
+        dd($request->task_id);
+        $request->session()->put('keyword', $request->keyword) ;
 
-        return redirect('/configtodo/find');
+        /*return redirect('/todo/find');*/
     }
 
     public function list_update(TodolistRequest $request)

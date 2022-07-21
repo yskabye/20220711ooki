@@ -6,6 +6,10 @@
         outline: none;
     }
 
+    a{
+        text-decoration: none;
+    }
+
     /* 先頭の入力 */
 
     .content{
@@ -57,22 +61,8 @@
         color: white;
     }
 
-    .content__area-mbtn{
-        padding: 7px 12px;
-        background-color: white;
-        border: 2px yellowgreen solid ;
-        border-radius: 5px;
-        color: yellowgreen;
-        margin: 0 0 20px 0;
-    }
-
-    .content__area-mbtn:hover{
-        background: yellowgreen;
-        color: white;
-    }
-
     .content__area-flex{
-        margin-top: -10px;
+        margin-top: 2px;
         display: flex;
         justify-content: space-between ;
     }
@@ -207,18 +197,22 @@
         color: white;
     }
 
-    .content__area-bkbtn{
+    .content__area-bkbtn {
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .content__area-bkbtn a{
         background: white;
         border: 2px gray solid;
         border-radius: 5px;
-        text-align: center;
         color: gray;
         font-size: 12px;
         font-weight: bold ;
         padding: 7px 15px;
     }
 
-    .content__area-bkbtn:hover{
+    .content__area-bkbtn a:hover{
         background: gray;
         color: white;
     }
@@ -229,22 +223,22 @@
 @section('content')
 <div class="content">
     <div class="content__area">
-        <form method="post">
+        <form>
             <div class="content__area-head">
                 <h1 class="content__area-head-tle">タスク検索</h1>
                 <p class="content__area-head-dsp">「{{$user->name}}」でログイン中</p>
-                <button type="submit" formaction="./logout" class="content__area-head-btn">ログアウト</button>
+                <button type="submit" formaction="./logout" class="content__area-head-btn" formmethod="post">ログアウト</button>
             </div>
             @csrf
              <div class="content__area-flex">
-               <input name="todo_memo" class="content__area-flex-inp" maxlenght="20">
+               <input name="keyword" class="content__area-flex-inp" maxlenght="20">
                 <select name="task_id" class="content__area-flex-select">
                     <option value="" selected></option>
                 @foreach($tasks as $task)
                     <option value="{{$task->id}}">{{$task->name}}</option>
                 @endforeach
                 </select>
-                <button type="submit" class="content__area-flex-btn" action="./find">検索</button>
+                <button type="submit" class="content__area-flex-btn" action="search" formmethod="get">検索</button>
             </div>
         </form>
 
@@ -290,10 +284,7 @@
             @endforeach
         </table>
 
-        <from action="post">
-          @csrf
-          <button type="submit" formaction="./" class="content__area-bkbtn">戻る</button>
-        </form>
+        <div class="content__area-bkbtn"><a href="/">戻る</a></div>
     </div>
 </div>
 @endsection
