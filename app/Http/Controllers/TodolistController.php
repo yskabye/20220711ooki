@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TodolistController extends Controller
 {
-    public function index()
+   public function index()
     {
         $user = Auth::user();
         $todolists = Todolist::where('user_id', $user->id)->get();
@@ -46,24 +46,28 @@ class TodolistController extends Controller
         return redirect('/');
     }
 
-    public function find(Request $request)
+    public function find()
     {
-        $task_id = $request->session()->get('task_id');
-        $keyword = $request->session()->get('keyword') . '*';
         $user = Auth::user();
-        $todolists = Todolist::where('user_id', $user->id)->where('task_id', $task_id)->where('todo_memo', 'like', $keyword)->get();
+        $todolists = Todolist::where('user_id', $user->id)->where('task_id', 0)->get();
         $tasks = Task::all();
         return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
 
     public function search(Request $request)
     {
-        dd($request);
-        $request->session()->put('task_id', $request->task_id) ;
-        dd($request->task_id);
-        $request->session()->put('keyword', $request->keyword) ;
+        $task_id = 0 ;
+        if(isset($request->task_id)) $task_id = $request->task_id;
+        $keyword = '';
+        if(isset($request->keyword)) $keyword = $request->keyword;
+        $request->session()->put('task_id', $task_id) ;
+        $request->session()->put('keyword', $keyword) ;
 
-        /*return redirect('/todo/find');*/
+        $user = Auth::user();
+        $todolists = $this->GetDataList($user->id, $keyword, $task_id) ;
+        $tasks = Task::all();
+
+        return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
 
     public function list_update(TodolistRequest $request)
@@ -72,13 +76,47 @@ class TodolistController extends Controller
         unset($form['_token']);
         Todolist::where('id', $request->id)->update($form);
 
-        return redirect('/todo/find');
+        $task_id = $request->session()->get('task_id') ;
+        $keyword = $request->session()->get('keyword') ;
+
+        $user = Auth::user();
+        $todolists = $this->GetDataList($user->id, $keyword, $task_id) ;
+        $tasks = Task::all();
+        
+        return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
 
     public function list_remove(TodolistRequest $request)
     {
         Todolist::find($request->id)->delete();
 
-        return redirect('/todo/find');
+        $task_id = $request->session()->get('task_id') ;
+        $keyword = $request->session()->get('keyword') ;
+
+        $user = Auth::user();
+        $todolists = $this->GetDataList($user->id, $keyword, $task_id) ;
+        $tasks = Task::all();
+        
+        return view('todolist.find', ['todolists' => $todolists, 'tasks' => $tasks, 'user' => $user]);
     }
+
+    private function GetDataList($user_id, $keyword, $task_id)
+    {
+        $todolists = [];
+
+        if(strlen($keyword) > 0 && $task_id > 0){
+            $todolists = Todolist::where('user_id', $user_id)->where('task_id', $task_id)->where('todo_memo', 'like', $keyword)->get();
+        }
+        else if($task_id > 0){
+            $todolists = Todolist::where('user_id', $user_id)->where('task_id', $task_id)->get();
+        }
+        else if(strlen($keyword) > 0){
+            $todolists = Todolist::where('user_id', $user_id)->where('todo_memo', 'LIKE', $keyword . '%' )->get();
+        }else{
+            $todolists = Todolist::where('user_id', $user_id)->get();
+        }
+
+        return $todolists;
+    }
+
 }

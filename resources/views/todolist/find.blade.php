@@ -238,7 +238,7 @@
                     <option value="{{$task->id}}">{{$task->name}}</option>
                 @endforeach
                 </select>
-                <button type="submit" class="content__area-flex-btn" action="search" formmethod="get">検索</button>
+                <button type="submit" class="content__area-flex-btn" formaction="search" formmethod="get">検索</button>
             </div>
         </form>
 
